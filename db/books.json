@@ -1,17 +1,1 @@
-{
-  "1465": {
-    "username": "madfinger11",
-    "email": "maddy@gmail.com",
-    "password": "yddam5342"
-  },
-  "2646": {
-    "username": "yemiakin",
-    "email": "emiakiy@gmail.com",
-    "password": "iy@g65"
-  },
-  "3253": {
-    "username": "ikechifortune",
-    "email": "echifo@gmail.com",
-    "password": "ifo#mf23"
-  }
-}
+{"1216":{"name":"Menjadi Ahli Machine Learning","price":"120000","author":"Alex Sulistio"},"1340":{"name":"Belajar C++","price":"27000","author":"Morgan"},"1465":{"name":"Belajar JavaScript Dasar","price":"20000","author":"Arief Rachman Hakim"},"6522":{"name":"Belajar Python","price":"25000","author":"Budi"}}

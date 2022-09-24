@@ -2,77 +2,75 @@
 const express = require("express");
 const router = express.Router();
 const fs = require("fs");
-const accountRoutes = require("./Account.js");
-router.use(accountRoutes);
-const dataPath = "./account.json";
-var path = require("path");
-const dataAcc = path.resolve(__dirname, "account.json");
+const bookRoutes = require("./Books.js");
+router.use(bookRoutes);
 
-// util function
-const saveAccountData = (data) => {
+// Locate the file
+var path = require("path");
+const dataPath = path.resolve("db", "books.json");
+
+// Utility Function
+// Save book data function
+const saveBookData = (data) => {
   const stringifyData = JSON.stringify(data);
-  fs.writeFileSync(dataAcc, stringifyData);
+  fs.writeFileSync(dataPath, stringifyData);
 };
 
-const getAccountData = () => {
-  // const data = path.resolve(
-  //   "C:UsersArXDocumentsMyGithubPerpustakaan_Buku-NodeJs-ExpressJs\routesaccount.json"
-  // );
-  const dataAcc2 = path.resolve(__dirname, "account.json");
-  const jsonData = fs.readFileSync(dataAcc2);
+// Add book data function
+const getBookData = () => {
+  const jsonData = fs.readFileSync(dataPath);
   return JSON.parse(jsonData);
 };
 
-console.log("====================================");
-
-// console.log("Current directory:", __dirname, "account.json");
-console.log(getAccountData());
-console.log("====================================");
-
 // Create an Account
-accountRoutes.post("/account/addaccount", (req, res) => {
-  let existAccount = getAccountData();
-  //  Math.floor(Math.random() * (max - min + 1) + min);
-  const newAccountId = Math.floor(1000 + Math.random() * 9000);
+bookRoutes.post("/book/addbook", (req, res) => {
+  let existBook = getBookData();
+  const newBookId = Math.floor(1000 + Math.random() * 9000); //generate unique id
 
-  existAccount[newAccountId] = req.body;
-  saveAccountData(existAccount);
-  res.send({ succes: true, msg: "account added succesfully" });
+  existBook[newBookId] = req.body;
+  saveBookData(existBook);
+  res.send({ succes: true, msg: "book added succesfully!" });
 });
 
 // Read all account form json file
-accountRoutes.get("/account/list", (req, res) => {
-  const account = getAccountData();
-  res.send(account);
+bookRoutes.get("/book/list", (req, res) => {
+  const books = getBookData();
+  res.send(books);
 });
 
 // Update - use put
-accountRoutes.put("/account/:id", (req, res) => {
-  var existAccounts = getAccountData();
+bookRoutes.put("/book/:id", (req, res) => {
+  let existBooks = getBookData();
   fs.readFile(
     dataPath,
     "utf8",
     (err, data) => {
-      const accountId = req.params["id"];
-      existAccounts[accountId] = req.body;
-      saveAccountData(existAccounts);
-      res.send(`account with id ${accountId} has been updated`);
+      const bookId = req.params["id"];
+      existBooks[bookId] = req.body;
+      saveBookData(existBooks);
+      res.send({
+        succes: true,
+        msg: `book with id ${bookId} has been updated!`,
+      });
     },
     true
   );
 });
 
 // delete
-accountRoutes.delete("/account/delete/:id", (req, res) => {
+bookRoutes.delete("/book/delete/:id", (req, res) => {
   fs.readFile(
     dataPath,
     "utf-8",
     (err, data) => {
-      var existAccounts = getAccountData();
-      const userId = req.params["id"];
-      delete existAccounts[userId];
-      saveAccountData(existAccounts);
-      res.send(`account with id ${userId} has been deleted`);
+      let existBooks = getBookData();
+      const bookId = req.params["id"];
+      delete existBooks[bookId];
+      saveBookData(existBooks);
+      res.send({
+        succes: true,
+        msg: `book with id ${bookId} has been deleted`,
+      });
     },
     true
   );
